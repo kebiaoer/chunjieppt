@@ -26,13 +26,15 @@
 
         /* 每一页的样式，设置每页的背景色和全屏显示 */
         .slide {
-            height: 300vh;
+            height: 100vh;
             width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
         }
 
         .red { background-color: #FFCDD2; }   /* 淡红色背景 */
@@ -42,6 +44,10 @@
         .text {
             font-size: 36px;
             color: #333;
+            opacity: 0; /* 初始隐藏文字 */
+            transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            bottom: 20px; /* 文字位于页面底部 */
         }
 
         .footer {
@@ -58,22 +64,22 @@
 
     <div class="container" id="ppt-container">
         <!-- 幻灯片1：淡红色背景 -->
-        <div class="slide red">
-            <div class="text">第一页：淡红色背景</div>
+        <div class="slide red" onclick="showText(0)">
+            <div class="text" id="text1">第一页：淡红色背景</div>
         </div>
 
         <!-- 幻灯片2：淡蓝色背景 -->
-        <div class="slide blue">
-            <div class="text">第二页：淡蓝色背景</div>
+        <div class="slide blue" onclick="showText(1)">
+            <div class="text" id="text2">第二页：淡蓝色背景</div>
         </div>
 
         <!-- 幻灯片3：淡绿色背景 -->
-        <div class="slide green">
-            <div class="text">第三页：淡绿色背景</div>
+        <div class="slide green" onclick="showText(2)">
+            <div class="text" id="text3">第三页：淡绿色背景</div>
         </div>
     </div>
 
-    <div class="footer">向上滑动或点击屏幕翻页</div>
+    <div class="footer">点击屏幕显示文字，向上滑动翻页</div>
 
     <script>
         let currentSlide = 0;  // 当前显示的幻灯片索引
@@ -89,6 +95,12 @@
                 currentSlide = index;
                 container.style.transform = `translateY(-${100 * currentSlide}vh)`;
             }
+        }
+
+        // 显示文字（通过点击事件触发）
+        function showText(index) {
+            const textElement = document.getElementById(`text${index + 1}`);
+            textElement.style.opacity = 1;  // 显示文字
         }
 
         // 监听触摸事件
@@ -143,7 +155,6 @@
                 showSlide(currentSlide - 1);
             }
         }
-
     </script>
 </body>
 </html>
