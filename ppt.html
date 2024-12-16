@@ -33,7 +33,6 @@
             width: 100vw;
             text-align: center;
             box-sizing: border-box;
-            transition: background-color 1s ease;
         }
 
         .div-container {
@@ -233,8 +232,11 @@
             touchMoveY = e.touches[0].clientY;  // 获取当前触摸位置
             let deltaY = touchMoveY - touchStartY;  // 计算滑动的距离
 
-            // 控制滑动效果
-            container.style.transform = `translateY(${(-100 * currentSlide) + deltaY / window.innerHeight * 100}vh)`;
+            // 控制滑动效果，限制滑动的偏移量
+            let offset = (-100 * currentSlide) + (deltaY / window.innerHeight * 100);
+            if (offset > 0) offset = 0;  // 不允许往上翻过头
+            if (offset < -(slides.length - 1) * 100) offset = -(slides.length - 1) * 100; // 不允许往下翻过头
+            container.style.transform = `translateY(${offset}vh)`;
         });
 
         document.addEventListener('touchend', (e) => {
@@ -261,4 +263,17 @@
         // 切换到下一页
         function nextSlide() {
             if (currentSlide < slides.length - 1) {
-                showSlide(currentSlide + 1
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        // 切换到上一页
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+    </script>
+</body>
+</html>
