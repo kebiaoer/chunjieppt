@@ -19,17 +19,17 @@
         .container {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            transition: transform 0.3s ease; /* 设定一个平滑的过渡效果 */
-            width: 100vw;
+            height: 120vh; /* 增大容器的高度，确保每一页有更多空间 */
+            transition: transform 0.5s ease;
+            width: 100vw; /* 设置容器的宽度为视口宽度 */
         }
 
         .slide {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            width: 100vw;
+            height: 100vh; /* 每页占满一个屏幕 */
+            width: 100vw; /* 设置每页的宽度为视口宽度 */
             text-align: center;
             box-sizing: border-box;
             transition: background-color 1s ease;
@@ -125,11 +125,7 @@
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const container = document.getElementById('ppt-container');
-        let touchStartY = 0;
-        let touchMoveY = 0;
-        let isSwiping = false;
 
-        // 显示特定页面
         function showSlide(index) {
             if (index >= 0 && index < slides.length) {
                 currentSlide = index;
@@ -137,36 +133,18 @@
             }
         }
 
-        // 监听触摸事件
+        // 监听触摸事件，向上滑动翻页
+        let touchStartY = 0;
         document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;  // 记录触摸开始的位置
-            isSwiping = true;
-        });
-
-        document.addEventListener('touchmove', (e) => {
-            if (!isSwiping) return;
-            touchMoveY = e.touches[0].clientY;  // 获取当前触摸位置
-            let deltaY = touchMoveY - touchStartY;  // 计算滑动的距离
-
-            // 控制滑动效果
-            container.style.transform = `translateY(${(-100 * currentSlide) + deltaY / window.innerHeight * 100}vh)`;
+            touchStartY = e.touches[0].clientY;
         });
 
         document.addEventListener('touchend', (e) => {
-            if (!isSwiping) return;
-            isSwiping = false;
-
-            let deltaY = touchMoveY - touchStartY;  // 计算滑动的总距离
-
-            // 如果滑动超过一定阈值，则翻页
-            if (Math.abs(deltaY) > window.innerHeight / 4) {
-                if (deltaY < 0) {
-                    nextSlide();  // 向上滑动翻到下一页
-                } else {
-                    prevSlide();  // 向下滑动返回上一页
-                }
-            } else {
-                showSlide(currentSlide);  // 如果滑动距离不够，恢复当前页面位置
+            const touchEndY = e.changedTouches[0].clientY;
+            if (touchStartY - touchEndY > 50) {  // 向上滑动
+                nextSlide();
+            } else if (touchEndY - touchStartY > 50) {  // 向下滑动
+                prevSlide();
             }
         });
 
@@ -186,6 +164,7 @@
                 showSlide(currentSlide - 1);
             }
         }
+
     </script>
 </body>
 </html>
