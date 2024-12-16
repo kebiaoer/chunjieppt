@@ -3,57 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>春节主题PPT</title>
+    <title>网页版PPT</title>
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
+            padding: 0;
+            font-family: Arial, sans-serif;
             overflow: hidden;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f1f1f1;
         }
 
+        /* 设置幻灯片容器的样式 */
         .container {
             display: flex;
             flex-direction: column;
-            height: 120vh; /* 增大容器的高度，确保每一页有更多空间 */
-            transition: transform 0.5s ease;
-            width: 100vw; /* 设置容器的宽度为视口宽度 */
+            height: 100%;
+            transition: transform 0.3s ease-in-out;
         }
 
+        /* 每一页的样式，设置每页的背景色和全屏显示 */
         .slide {
+            height: 100vh;
+            width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* 每页占满一个屏幕 */
-            width: 100vw; /* 设置每页的宽度为视口宽度 */
             text-align: center;
             box-sizing: border-box;
-            transition: background-color 1s ease;
         }
 
-        /* 页面内容样式 */
-        .cover {
-            background-color: #f9dcdc; /* 红色调 */
-        }
+        .red { background-color: #FFCDD2; }   /* 淡红色背景 */
+        .blue { background-color: #BBDEFB; }  /* 淡蓝色背景 */
+        .green { background-color: #C8E6C9; } /* 淡绿色背景 */
 
-        .content1 {
-            background-color: #f0a9a9; /* 粉色背景 */
-        }
-
-        .content2 {
-            background-color: #f4e1b1; /* 黄色背景 */
-        }
-
-        .content3 {
-            background-color: #d7f1a6; /* 绿色背景 */
-        }
-
-        .content4 {
-            background-color: #ffecb3; /* 浅黄色背景 */
+        .text {
+            font-size: 36px;
+            color: #333;
         }
 
         .footer {
@@ -64,68 +52,38 @@
             font-size: 18px;
             color: #888;
         }
-
-        .title {
-            font-size: 48px;
-            color: #ff4500;
-        }
-
-        .subtitle {
-            font-size: 24px;
-            color: #ffa500;
-        }
-
-        .content {
-            font-size: 28px;
-            color: #333;
-            max-width: 80%;
-        }
-
     </style>
 </head>
 <body>
 
     <div class="container" id="ppt-container">
-        <!-- 幻灯片1：封面 -->
-        <div class="slide cover">
-            <div class="title">春节快乐</div>
-            <div class="subtitle">Happy Chinese New Year</div>
+        <!-- 幻灯片1 -->
+        <div class="slide red">
+            <div class="text">第一页：淡红色背景</div>
         </div>
 
-        <!-- 幻灯片2：内容页1 -->
-        <div class="slide content1">
-            <div class="content">春节是中国最重要的传统节日，象征着团圆和新开始。</div>
+        <!-- 幻灯片2 -->
+        <div class="slide blue">
+            <div class="text">第二页：淡蓝色背景</div>
         </div>
 
-        <!-- 幻灯片3：内容页2 -->
-        <div class="slide content2">
-            <div class="content">在春节期间，人们会贴春联、放鞭炮、吃年夜饭。</div>
-        </div>
-
-        <!-- 幻灯片4：内容页3 -->
-        <div class="slide content3">
-            <div class="content">春节期间，还有舞龙舞狮等传统民俗活动。</div>
-        </div>
-
-        <!-- 幻灯片5：内容页4 -->
-        <div class="slide content4">
-            <div class="content">人们会互赠红包，祝愿彼此健康、平安、幸福。</div>
-        </div>
-
-        <!-- 幻灯片6：尾页 -->
-        <div class="slide cover">
-            <div class="title">谢谢观看</div>
-            <div class="subtitle">Happy Chinese New Year</div>
+        <!-- 幻灯片3 -->
+        <div class="slide green">
+            <div class="text">第三页：淡绿色背景</div>
         </div>
     </div>
 
     <div class="footer">向上滑动或点击屏幕翻页</div>
 
     <script>
-        let currentSlide = 0;
+        let currentSlide = 0;  // 当前显示的幻灯片索引
         const slides = document.querySelectorAll('.slide');
         const container = document.getElementById('ppt-container');
+        let touchStartY = 0;
+        let touchMoveY = 0;
+        let isSwiping = false;
 
+        // 显示特定页面
         function showSlide(index) {
             if (index >= 0 && index < slides.length) {
                 currentSlide = index;
@@ -133,18 +91,39 @@
             }
         }
 
-        // 监听触摸事件，向上滑动翻页
-        let touchStartY = 0;
+        // 监听触摸事件
         document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
+            touchStartY = e.touches[0].clientY;  // 记录触摸开始的位置
+            isSwiping = true;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            touchMoveY = e.touches[0].clientY;  // 获取当前触摸位置
+            let deltaY = touchMoveY - touchStartY;  // 计算滑动的距离
+
+            // 控制滑动效果，限制滑动的偏移量
+            let offset = (-100 * currentSlide) + (deltaY / window.innerHeight * 100);
+            if (offset > 0) offset = 0;  // 不允许往上翻过头
+            if (offset < -(slides.length - 1) * 100) offset = -(slides.length - 1) * 100; // 不允许往下翻过头
+            container.style.transform = `translateY(${offset}vh)`;
         });
 
         document.addEventListener('touchend', (e) => {
-            const touchEndY = e.changedTouches[0].clientY;
-            if (touchStartY - touchEndY > 50) {  // 向上滑动
-                nextSlide();
-            } else if (touchEndY - touchStartY > 50) {  // 向下滑动
-                prevSlide();
+            if (!isSwiping) return;
+            isSwiping = false;
+
+            let deltaY = touchMoveY - touchStartY;  // 计算滑动的总距离
+
+            // 如果滑动超过一定阈值，则翻页
+            if (Math.abs(deltaY) > window.innerHeight / 4) {
+                if (deltaY < 0) {
+                    nextSlide();  // 向上滑动翻到下一页
+                } else {
+                    prevSlide();  // 向下滑动返回上一页
+                }
+            } else {
+                showSlide(currentSlide);  // 如果滑动距离不够，恢复当前页面位置
             }
         });
 
