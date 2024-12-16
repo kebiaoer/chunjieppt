@@ -21,13 +21,14 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            width: 100%;
             transition: transform 0.3s ease-in-out;
         }
 
         /* 每一页的样式，设置每页的背景色和全屏显示 */
         .slide {
-            height: 100vh;
-            width: 100vw;
+            height: 100vh; /* 每一页的高度为100vh，确保占满屏幕 */
+            width: 100vw; /* 每一页的宽度为100vw，确保占满屏幕 */
             display: flex;
             justify-content: center;
             align-items: center;
