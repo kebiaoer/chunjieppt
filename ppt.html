@@ -19,41 +19,55 @@
         .container {
             display: flex;
             flex-direction: column;
-            height: 120vh; /* 增大容器的高度，确保每一页有更多空间 */
-            transition: transform 0.5s ease;
-            width: 100vw; /* 设置容器的宽度为视口宽度 */
+            height: 100%;
+            transition: transform 0.3s ease;
+            width: 100vw;
         }
 
         .slide {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* 每页占满一个屏幕 */
-            width: 100vw; /* 设置每页的宽度为视口宽度 */
+            height: 100vh;
+            width: 100vw;
             text-align: center;
             box-sizing: border-box;
             transition: background-color 1s ease;
         }
 
-        /* 页面内容样式 */
+        .div-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+
+        .div-container > div {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 页面背景颜色 */
         .cover {
-            background-color: #f9dcdc; /* 红色调 */
+            background-color: #f9dcdc;
         }
 
         .content1 {
-            background-color: #f0a9a9; /* 粉色背景 */
+            background-color: #f0a9a9;
         }
 
         .content2 {
-            background-color: #f4e1b1; /* 黄色背景 */
+            background-color: #f4e1b1;
         }
 
         .content3 {
-            background-color: #d7f1a6; /* 绿色背景 */
+            background-color: #d7f1a6;
         }
 
         .content4 {
-            background-color: #ffecb3; /* 浅黄色背景 */
+            background-color: #ffecb3;
         }
 
         .footer {
@@ -79,8 +93,19 @@
             font-size: 28px;
             color: #333;
             max-width: 80%;
+            margin: 10px 0;
         }
 
+        .large-text {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .small-text {
+            font-size: 18px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -88,34 +113,94 @@
     <div class="container" id="ppt-container">
         <!-- 幻灯片1：封面 -->
         <div class="slide cover">
-            <div class="title">春节快乐</div>
-            <div class="subtitle">Happy Chinese New Year</div>
+            <div class="div-container">
+                <div>
+                    <div class="title">春节快乐</div>
+                    <div class="subtitle">Happy Chinese New Year</div>
+                </div>
+                <div>
+                    <div class="content">春节是中国最重要的传统节日，象征着团圆和新开始。</div>
+                </div>
+                <div>
+                    <div class="small-text">春节期间，家人团聚，充满了欢声笑语。</div>
+                </div>
+            </div>
         </div>
 
         <!-- 幻灯片2：内容页1 -->
         <div class="slide content1">
-            <div class="content">春节是中国最重要的传统节日，象征着团圆和新开始。</div>
+            <div class="div-container">
+                <div>
+                    <div class="large-text">春节的传统活动</div>
+                </div>
+                <div>
+                    <div class="content">春节期间，人们会贴春联、放鞭炮、吃年夜饭。</div>
+                </div>
+                <div>
+                    <div class="small-text">这些传统活动代代相传，成为了中华文化的重要组成部分。</div>
+                </div>
+            </div>
         </div>
 
         <!-- 幻灯片3：内容页2 -->
         <div class="slide content2">
-            <div class="content">在春节期间，人们会贴春联、放鞭炮、吃年夜饭。</div>
+            <div class="div-container">
+                <div>
+                    <div class="large-text">春节的习俗</div>
+                </div>
+                <div>
+                    <div class="content">春节期间，还有舞龙舞狮、庙会、灯会等精彩的传统活动。</div>
+                </div>
+                <div>
+                    <div class="small-text">每年的春节，各地都会举行盛大的庆祝活动，吸引成千上万的人参与。</div>
+                </div>
+            </div>
         </div>
 
         <!-- 幻灯片4：内容页3 -->
         <div class="slide content3">
-            <div class="content">春节期间，还有舞龙舞狮等传统民俗活动。</div>
+            <div class="div-container">
+                <div>
+                    <div class="large-text">春节的象征意义</div>
+                </div>
+                <div>
+                    <div class="content">春节象征着家庭团圆、幸福和平安，是每个中国人心中最温暖的节日。</div>
+                </div>
+                <div>
+                    <div class="small-text">春节是新的开始，人们用热情和期望迎接新的一年。</div>
+                </div>
+            </div>
         </div>
 
         <!-- 幻灯片5：内容页4 -->
         <div class="slide content4">
-            <div class="content">人们会互赠红包，祝愿彼此健康、平安、幸福。</div>
+            <div class="div-container">
+                <div>
+                    <div class="large-text">春节的红包文化</div>
+                </div>
+                <div>
+                    <div class="content">在春节期间，长辈会给晚辈发红包，象征着祝福和好运。</div>
+                </div>
+                <div>
+                    <div class="small-text">红包不仅仅是一种礼物，更是一种文化传承。</div>
+                </div>
+            </div>
         </div>
 
         <!-- 幻灯片6：尾页 -->
         <div class="slide cover">
-            <div class="title">谢谢观看</div>
-            <div class="subtitle">Happy Chinese New Year</div>
+            <div class="div-container">
+                <div>
+                    <div class="title">谢谢观看</div>
+                    <div class="subtitle">Happy Chinese New Year</div>
+                </div>
+                <div>
+                    <div class="small-text">感谢您的观看，祝您新春快乐，万事如意！</div>
+                </div>
+                <div>
+                    <div class="small-text">我们期待与您在新的一年里继续同行。</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -125,7 +210,11 @@
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const container = document.getElementById('ppt-container');
+        let touchStartY = 0;
+        let touchMoveY = 0;
+        let isSwiping = false;
 
+        // 显示特定页面
         function showSlide(index) {
             if (index >= 0 && index < slides.length) {
                 currentSlide = index;
@@ -133,18 +222,36 @@
             }
         }
 
-        // 监听触摸事件，向上滑动翻页
-        let touchStartY = 0;
+        // 监听触摸事件
         document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
+            touchStartY = e.touches[0].clientY;  // 记录触摸开始的位置
+            isSwiping = true;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            touchMoveY = e.touches[0].clientY;  // 获取当前触摸位置
+            let deltaY = touchMoveY - touchStartY;  // 计算滑动的距离
+
+            // 控制滑动效果
+            container.style.transform = `translateY(${(-100 * currentSlide) + deltaY / window.innerHeight * 100}vh)`;
         });
 
         document.addEventListener('touchend', (e) => {
-            const touchEndY = e.changedTouches[0].clientY;
-            if (touchStartY - touchEndY > 50) {  // 向上滑动
-                nextSlide();
-            } else if (touchEndY - touchStartY > 50) {  // 向下滑动
-                prevSlide();
+            if (!isSwiping) return;
+            isSwiping = false;
+
+            let deltaY = touchMoveY - touchStartY;  // 计算滑动的总距离
+
+            // 如果滑动超过一定阈值，则翻页
+            if (Math.abs(deltaY) > window.innerHeight / 4) {
+                if (deltaY < 0) {
+                    nextSlide();  // 向上滑动翻到下一页
+                } else {
+                    prevSlide();  // 向下滑动返回上一页
+                }
+            } else {
+                showSlide(currentSlide);  // 如果滑动距离不够，恢复当前页面位置
             }
         });
 
@@ -154,17 +261,4 @@
         // 切换到下一页
         function nextSlide() {
             if (currentSlide < slides.length - 1) {
-                showSlide(currentSlide + 1);
-            }
-        }
-
-        // 切换到上一页
-        function prevSlide() {
-            if (currentSlide > 0) {
-                showSlide(currentSlide - 1);
-            }
-        }
-
-    </script>
-</body>
-</html>
+                showSlide(currentSlide + 1
