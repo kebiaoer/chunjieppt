@@ -3,156 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>网页版PPT</title>
+    <title>全屏幻灯片示例</title>
     <style>
-        body {
+        body, html {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            height: 100%;
             overflow: hidden;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        /* 设置幻灯片容器的样式 */
-        .container {
+        .slider-container {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            width: 100%;
-            transition: transform 0.3s ease-in-out;
+            height: 100vh;
+            transition: transform 0.5s ease;
         }
 
-        /* 每一页的样式，设置每页的背景色和全屏显示 */
         .slide {
-            height: 100vh; /* 每一页的高度为100vh，确保占满屏幕 */
-            width: 100vw; /* 每一页的宽度为100vw，确保占满屏幕 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            box-sizing: border-box;
-            position: relative;
-            cursor: pointer; /* 增加点击效果 */
-        }
-
-        .red { background-color: #FFCDD2; }   /* 淡红色背景 */
-        .blue { background-color: #BBDEFB; }  /* 淡蓝色背景 */
-        .green { background-color: #C8E6C9; } /* 淡绿色背景 */
-
-        .text {
-            font-size: 36px;
-            color: #333;
-            opacity: 0; /* 初始隐藏文字 */
-            transition: opacity 0.5s ease-in-out;
-            position: absolute;
-            bottom: 20px; /* 文字位于页面底部 */
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 20px;
+            height: 100vh;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
             text-align: center;
-            font-size: 18px;
-            color: #888;
+            position: relative; /* 使内部元素可以绝对定位 */
+        }
+
+        .slide.red {
+            background-color: red;
+        }
+
+        .slide.green {
+            background-color: green;
+        }
+
+        .slide.blue {
+            background-color: blue;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .poem {
+            margin-top: 20px;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .poem p {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
-
-    <div class="container" id="ppt-container">
-        <!-- 幻灯片1：淡红色背景 -->
-        <div class="slide red" onclick="showText(0)">
-            <div class="text" id="text1">第一页：淡红色背景</div>
+    <div id="slider" class="slider-container">
+        <div class="slide red">
+            <h1 id="red-title" class="hidden">我是红标题</h1>
+            <div id="poem" class="poem hidden">
+                <p>床前明月光，</p>
+                <p>疑是地上霜。</p>
+                <p>举头望明月，</p>
+                <p>低头思故乡。</p>
+            </div>
         </div>
-
-        <!-- 幻灯片2：淡蓝色背景 -->
-        <div class="slide blue" onclick="showText(1)">
-            <div class="text" id="text2">第二页：淡蓝色背景</div>
-        </div>
-
-        <!-- 幻灯片3：淡绿色背景 -->
-        <div class="slide green" onclick="showText(2)">
-            <div class="text" id="text3">第三页：淡绿色背景</div>
-        </div>
+        <div class="slide green hidden">绿色背景</div>
+        <div class="slide blue hidden">蓝色背景</div>
     </div>
 
-    <div class="footer">点击屏幕显示文字，向上滑动翻页</div>
-
     <script>
-        let currentSlide = 0;  // 当前显示的幻灯片索引
+        let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const container = document.getElementById('ppt-container');
-        let touchStartY = 0;
-        let touchMoveY = 0;
-        let isSwiping = false;
+        const totalSlides = slides.length;
 
-        // 显示特定页面
-        function showSlide(index) {
-            if (index >= 0 && index < slides.length) {
-                currentSlide = index;
-                container.style.transform = `translateY(-${100 * currentSlide}vh)`;
-            }
+        function goToSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+
+            // 隐藏所有幻灯片
+            slides.forEach(slide => slide.classList.add('hidden'));
+
+            // 显示当前幻灯片
+            slides[index].classList.remove('hidden');
+
+            currentSlide = index;
         }
 
-        // 显示文字（通过点击事件触发）
-        function showText(index) {
-            const textElement = document.getElementById(`text${index + 1}`);
-            textElement.style.opacity = 1;  // 显示文字
+        let yStartPos = 0;
+        let yEndPos = 0;
+        let isRedTitleShown = false;
+        let isPoemShown = false;
+
+        window.addEventListener('touchstart', handleTouchStart, false);
+        window.addEventListener('touchmove', handleTouchMove, false);
+        window.addEventListener('touchend', handleTouchEnd, false);
+
+        function handleTouchStart(event) {
+            yStartPos = event.touches[0].clientY;
         }
 
-        // 监听触摸事件
-        document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;  // 记录触摸开始的位置
-            isSwiping = true;
-        });
+        function handleTouchMove(event) {
+            yEndPos = event.touches[0].clientY;
+        }
 
-        document.addEventListener('touchmove', (e) => {
-            if (!isSwiping) return;
-            touchMoveY = e.touches[0].clientY;  // 获取当前触摸位置
-            let deltaY = touchMoveY - touchStartY;  // 计算滑动的距离
+        function handleTouchEnd(event) {
+            if (currentSlide === 0) { // 当前是红色页面
+                const redTitle = document.getElementById('red-title');
+                const poem = document.getElementById('poem');
 
-            // 控制滑动效果，限制滑动的偏移量
-            let offset = (-100 * currentSlide) + (deltaY / window.innerHeight * 100);
-            if (offset > 0) offset = 0;  // 不允许往上翻过头
-            if (offset < -(slides.length - 1) * 100) offset = -(slides.length - 1) * 100; // 不允许往下翻过头
-            container.style.transform = `translateY(${offset}vh)`;
-        });
-
-        document.addEventListener('touchend', (e) => {
-            if (!isSwiping) return;
-            isSwiping = false;
-
-            let deltaY = touchMoveY - touchStartY;  // 计算滑动的总距离
-
-            // 如果滑动超过一定阈值，则翻页
-            if (Math.abs(deltaY) > window.innerHeight / 4) {
-                if (deltaY < 0) {
-                    nextSlide();  // 向上滑动翻到下一页
-                } else {
-                    prevSlide();  // 向下滑动返回上一页
+                // 检查是否向上滑动并且 h1 和 poem 都已显示
+                if (yStartPos > yEndPos && isRedTitleShown && isPoemShown) {
+                    goToSlide(currentSlide + 1);
                 }
-            } else {
-                showSlide(currentSlide);  // 如果滑动距离不够，恢复当前页面位置
+                if (!isRedTitleShown) {
+                    // 第一次触摸：显示 h1
+                    redTitle.classList.remove('hidden');
+                    isRedTitleShown = true;
+                } else if (!isPoemShown) {
+                    // 第二次触摸：显示古诗
+                    poem.classList.remove('hidden');
+                    isPoemShown = true;
+                }
             }
-        });
 
-        // 切换到下一页
-        function nextSlide() {
-            if (currentSlide < slides.length - 1) {
-                showSlide(currentSlide + 1);
-            }
+
+            // 重置位置
+            yStartPos = 0;
+            yEndPos = 0;
         }
 
-        // 切换到上一页
-        function prevSlide() {
-            if (currentSlide > 0) {
-                showSlide(currentSlide - 1);
-            }
-        }
+        // 初始化显示第一个幻灯片
+        goToSlide(0);
     </script>
 </body>
 </html>
