@@ -34,7 +34,7 @@
             text-align: center;
             box-sizing: border-box;
             position: relative;
-            cursor: pointer;
+            cursor: pointer; /* 增加点击效果 */
         }
 
         .red { background-color: #FFCDD2; }   /* 淡红色背景 */
@@ -138,9 +138,6 @@
                 showSlide(currentSlide);  // 如果滑动距离不够，恢复当前页面位置
             }
         });
-
-        // 点击翻页
-        document.addEventListener('click', nextSlide);
 
         // 切换到下一页
         function nextSlide() {
